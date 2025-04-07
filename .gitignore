@@ -1,0 +1,13 @@
+# Ignore Python cache files
+__pycache__/
+
+# Ignore virtual environments
+env/
+bin/
+etc/
+share/
+pyvenv/
+
+# Ignore output frames and generated video files
+output_frames/
+video/
