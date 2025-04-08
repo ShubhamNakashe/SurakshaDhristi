@@ -9,7 +9,7 @@ def live_surveillance():
     fetch_mobile_ip_locations()
 
     locations = ['Andheri', 'Bandra', 'Colaba', 'Dadar', 'Thane', 'Borivali']
-    video_files = ["Videos/NonV.mp4", "Videos/NonV2.mp4", "Videos/NonV3.mp4", "Videos/NonV4.mp4", "Videos/NonV5.mp4", "Videos/fight2.MP4"]
+    video_files = ["Videos/V.mp4", "Videos/NonV2.mp4", "Videos/V5.mp4", "Videos/NV.mp4", "Videos/V7.mp4", "Videos/V6.MP4"]
 
     if "analysis_results" not in st.session_state:
         st.session_state.analysis_results = [None] * len(video_files)
@@ -34,9 +34,15 @@ def live_surveillance():
                         st.write("✅ Males not more than females. Skipping violence detection.")
 
 
-                result = st.session_state.analysis_results[idx]
-                if result:
-                    st.success(result) if "No Violence" in result else st.error(result)
+                    result = st.session_state.analysis_results[idx]
+                    if isinstance(result, str):  # ✅ Check if result is actually a string
+                        if "No Violence" in result:
+                            st.success(result)
+                        else:
+                            st.error(result)
+                    elif result is not None:
+                        st.warning("⚠️ Unexpected result type returned from detect_violence()")
+
 
                 if st.button(f"Send Alert ({locations[idx]})", key=f"alert_{idx}"):
                     nearest_mobile, nearest_ip, dist = find_nearest_mobile(cctv_locations[idx])
