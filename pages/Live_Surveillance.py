@@ -13,10 +13,10 @@ def live_surveillance():
         "Videos/V.mp4",     # Kurla
         "Videos/NonV2.mp4",  # Andheri
         # "Videos/V5.mp4",     # Bandra
-        "Videos/NV7.mp4",    # Vashi
-        "Videos/V7.mp4",     # Dadar
+        "Videos/NV9.mp4",    # Vashi
+        "Videos/V9.mp4",     # Dadar
         "Videos/V6.MP4",     # Thane
-        "Videos/V6.MP4"      # Borivali (repeated or replace with correct if needed)
+        "Videos/V10.MP4"      # Borivali (repeated or replace with correct if needed)
     ]
 
     if "analysis_results" not in st.session_state:
