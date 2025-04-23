@@ -29,8 +29,7 @@ def preprocess_violence_frame(frame):
 # Labels
 gender_labels = ['Male', 'Female']
 violence_labels = ['Non-Violent', 'Violent']
-VIOLENCE_THRESHOLD = 0.0009
-
+VIOLENCE_THRESHOLD = 0.0006
 # Custom VideoProcessor for streamlit-webrtc
 class VideoProcessor(VideoProcessorBase):
     def __init__(self):

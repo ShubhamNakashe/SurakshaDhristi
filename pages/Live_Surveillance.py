@@ -13,10 +13,10 @@ def live_surveillance():
         "Videos/V.mp4",     # Kurla
         "Videos/NonV2.mp4",  # Andheri
         # "Videos/V5.mp4",     # Bandra
-        "Videos/NV9.mp4",    # Vashi
-        "Videos/V9.mp4",     # Dadar
+        "Videos/NonV4.mp4",    # Vashi
+        "Videos/V7.mp4",     # Dadar
         "Videos/V6.MP4",     # Thane
-        "Videos/V10.MP4"      # Borivali (repeated or replace with correct if needed)
+        "Videos/V5.MP4"      # Borivali (repeated or replace with correct if needed)
     ]
 
     if "analysis_results" not in st.session_state:
@@ -42,18 +42,32 @@ def live_surveillance():
 
                     if male_percent > female_percent:
                         st.warning("⚠️ More males than females. Checking for violence...")
-                        st.session_state.analysis_results[idx] = detect_violence(video_files[idx])
+                        result = detect_violence(video_files[idx])
+                        st.session_state.analysis_results[idx] = result
+
+                        if isinstance(result, str):
+                            if "No Violence" in result:
+                                st.success(result)
+                            else:
+                                st.error(result)
+
+                                # ✅ Automatically send alert here
+                                location_lower = location_name.lower()
+                                if any(loc in location_lower for loc in ["andheri", "vashi", "dadar"]):
+                                    contact_number = "+919321573202"
+                                    send_sms_alert(contact_number, f"🚨 Alert: Issue at {location_name} CCTV.")
+                                    st.success(f"📲 Alert sent to {contact_number} (Fixed Routing) for: {location_name}")
+                                else:
+                                    nearest_number, nearest_ip, dist = find_nearest_mobile(location_data)
+                                    if nearest_number:
+                                        send_sms_alert(nearest_number, f"🚨 Alert: Issue at {location_name} CCTV. Nearest IP ({nearest_ip}) alerted.")
+                                        st.success(f"📲 Alert sent to nearest contact: {nearest_number} (Distance: {dist:.2f} km)")
+                                    else:
+                                        st.error("❌ Could not find nearest responder.")
+                        else:
+                            st.warning("⚠️ Unexpected result type from detect_violence()")
                     else:
                         st.success("✅ No abnormal gender ratio. Skipping violence detection.")
-
-                    result = st.session_state.analysis_results[idx]
-                    if isinstance(result, str):
-                        if "No Violence" in result:
-                            st.success(result)
-                        else:
-                            st.error(result)
-                    elif result is not None:
-                        st.warning("⚠️ Unexpected result type from detect_violence()")
 
                 # 🚨 Updated: Route specific locations to fixed number, rest use nearest
                 if st.button(f"Send Alert ({location_name})", key=f"alert_{idx}"):
