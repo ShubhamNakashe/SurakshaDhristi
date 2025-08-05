@@ -5,6 +5,7 @@ import plotly.graph_objs as go
 from datetime import datetime
 from utils.db_connection import save_crime_data, db
 from utils.db_connection import fetch_crime_data
+from streamlit_extras.switch_page_button import switch_page
 
 # Set page configuration
 st.set_page_config(page_title="Crime Dashboard - Suraksha Drishti", layout="wide")
@@ -19,6 +20,10 @@ st.markdown(
         color: white;
         font-family: 'Arial', sans-serif;
     }
+     label[data-baseweb="form-control"] > div {
+            color: white !important;
+            font-weight: bold;
+    }
     h1 {
         font-size: 48px;
         font-weight: bold;
@@ -31,23 +36,44 @@ st.markdown(
         text-align: center;
     }
     /* Navigation bar styling */
-    .nav-bar {
-        display: flex;
-        justify-content: flex-end;
-        padding: 10px 20px;
-        background-color: rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
-        margin-bottom: 20px;
-    }
-    .nav-item {
-        margin: 0 15px;
-        font-size: 16px;
-        color: white;
-        text-decoration: none;
-    }
-    .nav-item:hover {
-        color: #ff4d94;
-    }
+        .nav-bar {
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px 20px;
+    background: transparent;
+    margin-bottom: 25px;
+}
+
+.nav-item {
+    margin: 0 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+}
+
+.nav-item:hover {
+    color: #f9a8d4;
+    text-decoration: underline;
+}
+.stButton>button {
+    margin: 6px;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 900;  /* Bold text */
+    font-size: 22px;   /* Larger font size */
+    border: none;
+    background-color: rgba(255, 255, 255, 0.1); /* Subtle hover effect */
+    color: #f9a8d4;
+    transition: all 0.3s ease-in-out;
+}
+
+.stButton>button:hover {
+    text-decoration: underline;
+    background-color: rgba(255, 255, 255, 0.1); /* Subtle hover effect */
+    color: #f9a8d4;
+}
     /* Card styling for sections */
     .card {
         background-color: rgba(255, 255, 255, 0.1);
@@ -104,22 +130,22 @@ st.markdown(
     /* Adjust Streamlit elements */
     .stSelectbox, .stMultiSelect, .stDateInput {
         background-color: rgba(255, 255, 255, 0.1);
-        color: #000000; /* Black text for dropdowns */
+        color: white; /* Black text for dropdowns */
         border-radius: 8px;
     }
     .stSelectbox div, .stMultiSelect div, .stDateInput div {
         color: #000000; /* Black text for dropdown options */
     }
-    .stButton>button {
-        background-color: #ff4d94;
-        color: #000000; /* Changed text color to black */
-        border-radius: 8px;
-        font-weight: 600;
-    }
-    .stButton>button:hover {
-        background-color: #ff6ba8;
-        color: #000000; /* Black text on hover */
-    }
+    # .stButton>button {
+    #     background-color: #ff4d94;
+    #     color: #000000; /* Changed text color to black */
+    #     border-radius: 8px;
+    #     font-weight: 600;
+    # }
+    # .stButton>button:hover {
+    #     background-color: #ff6ba8;
+    #     color: #000000; /* Black text on hover */
+    # }
     </style>
     """,
     unsafe_allow_html=True
@@ -128,20 +154,25 @@ st.markdown(
 # Logo and Navigation Bar
 col1, col2 = st.columns([1, 4])
 with col1:
-    st.image("https://via.placeholder.com/150x50?text=Suraksha+Drishti", width=150)  # Replace with your logo URL
+    st.image("Videos/logo3.png", width=150)
+
 with col2:
-    st.markdown(
-        """
-        <div class="nav-bar">
-            <a class="nav-item" href="http://localhost:8501/app.py">Home</a>
-            <a class="nav-item" href="http://localhost:8501/pages/Crime_Dashboard.py">Dashboard</a>
-            <a class="nav-item" href="http://localhost:8501/app.py">CCTV</a>
-            <a class="nav-item" href="http://localhost:8501/app.py">Live</a>
-            <a class="nav-item" href="http://localhost:8501/app.py">Violence</a>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    col2_1, col2_2, col2_3, col2_4, col2_5 = st.columns(5)
+    with col2_1:
+        if st.button("Home"):
+            switch_page("app")  # if app.py is your main file
+    with col2_2:
+        if st.button("Locate on Map"):
+            switch_page("ip locator")
+    with col2_3:
+        if st.button("CCTV Footage"):
+            switch_page("live surveillance")
+    with col2_4:
+        if st.button("Live Cameras"):
+            switch_page("WebCam")
+    with col2_5:
+        if st.button("Dashboard"):
+            switch_page("crime dashboard")
 
 # Main Title
 st.markdown("<h1>Crime Data Dashboard</h1>", unsafe_allow_html=True)
@@ -157,12 +188,24 @@ if crime_data:
     # Filter Section
     st.markdown("<div class='filter-section'>", unsafe_allow_html=True)
     st.markdown("<h3>🔍 Filter Crime Data</h3>", unsafe_allow_html=True)
+    
+    st.markdown("""
+    <style>
+        label[data-baseweb="form-control"] > div {
+            color: white !important;
+            font-weight: bold;
+        }
+    </style>
+""", unsafe_allow_html=True) 
+    
+    col1, col2, col3 = st.columns(3)
 
-    col1, col2, col3 = st.columns([3, 3, 4])
     with col1:
         crime_types = st.multiselect("Select Crime Types", df['type'].unique(), default=df['type'].unique())
+
     with col2:
         locations = st.multiselect("Select Locations", df['location'].unique(), default=df['location'].unique())
+
     with col3:
         date_range = st.date_input("Select Date Range", [df['date'].min(), df['date'].max()])
 

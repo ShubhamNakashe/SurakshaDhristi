@@ -2,9 +2,9 @@ from twilio.rest import Client
 import streamlit as st
 
 # ✅ Replace these with your actual Twilio credentials
-TWILIO_ACCOUNT_SID = "ACe501f1b54e736b18947e15c98c33ec7a"
-TWILIO_AUTH_TOKEN = "98f333d82b9192fa7a6c7d09349a71fd"
-TWILIO_PHONE_NUMBER = "+14704658812"  # Your Twilio phone number
+TWILIO_ACCOUNT_SID = "ACb822d5b0106006cd503d710c3e0162a5"
+TWILIO_AUTH_TOKEN = " 596db2fe0db69a61901a210607f3c92a"
+TWILIO_PHONE_NUMBER = "+14246226918"  # Your Twilio phone number
 
 my_phone_number=['+918850469020','+919321573202','+918104027851','+917756949603']
 

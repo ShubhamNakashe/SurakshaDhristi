@@ -5,6 +5,7 @@
 # st.write("Welcome! Use the sidebar to navigate between pages.")
 
 import streamlit as st
+from streamlit_extras.switch_page_button import switch_page
 
 # Set page configuration
 st.set_page_config(page_title="Suraksha Drishti", layout="wide")
@@ -34,22 +35,43 @@ st.markdown(
     }
     /* Navigation bar styling */
     .nav-bar {
-        display: flex;
-        justify-content: flex-end;
-        padding: 10px 20px;
-        background-color: rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
-        margin-bottom: 20px;
-    }
-    .nav-item {
-        margin: 0 15px;
-        font-size: 16px;
-        color: white;
-        text-decoration: none;
-    }
-    .nav-item:hover {
-        color: #ff4d94;
-    }
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px 20px;
+    background: transparent;
+    margin-bottom: 25px;
+}
+
+.nav-item {
+    margin: 0 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+}
+
+.nav-item:hover {
+    color: #f9a8d4;
+    text-decoration: underline;
+}
+.stButton>button {
+    margin: 6px;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 900;  /* Bold text */
+    font-size: 22px;   /* Larger font size */
+    border: none;
+    background-color: rgba(255, 255, 255, 0.1); /* Subtle hover effect */
+    color: #f9a8d4;
+    transition: all 0.3s ease-in-out;
+}
+
+.stButton>button:hover {
+    text-decoration: underline;
+    background-color: rgba(255, 255, 255, 0.1); /* Subtle hover effect */
+    color: #f9a8d4;
+}
     /* Feature cards styling */
     .feature-card {
         background-color: rgba(255, 255, 255, 0.1);
@@ -87,20 +109,25 @@ st.markdown(
 # Logo and Navigation Bar
 col1, col2 = st.columns([1, 4])
 with col1:
-    st.image("https://via.placeholder.com/150x50?text=Suraksha+Drishti", width=150)  # Replace with your logo URL
+    st.image("Videos/logo3.png", width=150)
+
 with col2:
-    st.markdown(
-        """
-        <div class="nav-bar">
-            <a class="nav-item" href="#">Home</a>
-            <a class="nav-item" href="#">Dashboard</a>
-            <a class="nav-item" href="#">CCTV</a>
-            <a class="nav-item" href="#">Live</a>
-            <a class="nav-item" href="#webcam-section">Violence</a>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    col2_1, col2_2, col2_3, col2_4, col2_5 = st.columns(5)
+    with col2_1:
+        if st.button("Home"):
+            switch_page("app")  # if app.py is your main file
+    with col2_2:
+        if st.button("Locate on Map"):
+            switch_page("ip locator")
+    with col2_3:
+        if st.button("CCTV Footage"):
+            switch_page("live surveillance")
+    with col2_4:
+        if st.button("Live Cameras"):
+            switch_page("WebCam")
+    with col2_5:
+        if st.button("Dashboard"):
+            switch_page("crime dashboard")
 
 # Main Title and Subtitle
 st.markdown("<h1>Real-Time Women Safety Surveillance</h1>", unsafe_allow_html=True)
@@ -131,7 +158,7 @@ with cols1[1]:
         """
         <div class="feature-card">
             <div class="feature-icon">👁️</div>
-            <div class="feature-title">YOLO Monitoring</div>
+            <div class="feature-title">Monitoring</div>
             <div class="feature-desc">Object and person detection via camera feeds.</div>
         </div>
         """,

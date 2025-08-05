@@ -94,6 +94,7 @@ from utils.helpers import fetch_mobile_ip_locations, cctv_locations, find_neares
 from utils.sms import send_sms_alert
 from ViolTry import detect_violence
 from gender_detect import count_genders
+from streamlit_extras.switch_page_button import switch_page
 
 # Set page configuration
 st.set_page_config(page_title="Live CCTV Surveillance Dashboard - Suraksha Drishti", layout="wide")
@@ -112,87 +113,97 @@ st.markdown(
         font-size: 46px;
         font-weight: bold;
         text-align: center;
-        color: #f8fafc;
+       color: #ffffff;  /* Changed to pure white */
         margin-bottom: 40px;
     }
     .nav-bar {
-        display: flex;
-        justify-content: flex-end;
-        padding: 10px 20px;
-        background-color: rgba(255, 255, 255, 0.05);
-        border-radius: 12px;
-        margin-bottom: 25px;
-    }
-    .nav-item {
-        margin: 0 15px;
-        font-size: 16px;
-        color: #e0e7ff;
-        text-decoration: none;
-    }
-    .nav-item:hover {
-        color: #f9a8d4;
-    }
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px 20px;
+    background: transparent;
+    margin-bottom: 25px;
+}
+
+.nav-item {
+    margin: 0 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+}
+
+.nav-item:hover {
+    color: #f9a8d4;
+    text-decoration: underline;
+}
+.stButton>button {
+    margin: 6px;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 900;  /* Bold text */
+    font-size: 22px;   /* Larger font size */
+    border: none;
+    background-color: rgba(255, 255, 255, 0.1); /* Subtle hover effect */
+    color: #f9a8d4;
+    transition: all 0.3s ease-in-out;
+}
+
+.stButton>button:hover {
+    text-decoration: underline;
+    background-color: rgba(255, 255, 255, 0.1); /* Subtle hover effect */
+    color: #f9a8d4;
+}
     .video-card {
         background-color: rgba(255, 255, 255, 0.06);
         border-radius: 15px;
         padding: 12px;
         margin: 10px;
         text-align: center;
-        color: #e0e7ff;
+        color: #ffffff;  /* Changed to pure white */
     }
     .location-marker {
-        color: #c084fc;
-        font-size: 18px;
-        margin-top: 8px;
-        font-weight: bold;
+        color: #ffffff;  /* Changed to pure white */
+        font-size: 20px;
+        margin-top: 10px;
+        font-weight: 700;  /* bold */
+        letter-spacing: 0.5px;
     }
-    .stButton>button {
-        margin: 6px;
-        padding: 8px 16px;
-        border-radius: 10px;
-        font-weight: 600;
-        border: none;
-        
-    }
-    .stButton>button:nth-child(1) {
-        background-color: #9333ea;
-        color: white;
-    }
-    .stButton>button:nth-child(1):hover {
-        background-color: #c084fc;
-        color: #1e1b4b;
-    }
-    .stButton>button:nth-child(2) {
-        background-color: #ef4444;
-        color: white;
-    }
-    .stButton>button:nth-child(2):hover {
-        background-color: #f87171;
-        color: black;
-    }
+
     </style>
     """,
     unsafe_allow_html=True
 )
 
 
+
+# # Logo and Navigation Bar
+import streamlit as st
+
 # Logo and Navigation Bar
 col1, col2 = st.columns([1, 4])
 with col1:
-    st.image("https://via.placeholder.com/150x50?text=Suraksha+Drishti", width=150, clamp=True)
+    st.image("Videos/logo3.png", width=150)
+
 with col2:
-    st.markdown(
-        """
-        <div class="nav-bar">
-            <a class="nav-item" href="http://localhost:8501/app.py">Home</a>
-            <a class="nav-item" href="http://localhost:8501/pages/Crime_Dashboard.py">Dashboard</a>
-            <a class="nav-item" href="http://localhost:8501/pages/CCTV_Tracker.py">CCTV</a>
-            <a class="nav-item" href="http://localhost:8501/pages/Live_Surveillance.py">Live</a>
-            <a class="nav-item" href="http://localhost:8501/app.py">Violence</a>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    col2_1, col2_2, col2_3, col2_4, col2_5 = st.columns(5)
+    with col2_1:
+        if st.button("Home"):
+            switch_page("app")  # if app.py is your main file
+    with col2_2:
+        if st.button("Locate on Map"):
+            switch_page("ip locator")
+    with col2_3:
+        if st.button("CCTV Footage"):
+            switch_page("live surveillance")
+    with col2_4:
+        if st.button("Live Cameras"):
+            switch_page("WebCam")
+    with col2_5:
+        if st.button("Dashboard"):
+            switch_page("crime dashboard")
+
+
 
 # Main Title
 st.markdown("<h1>📹 Live CCTV Surveillance Dashboard</h1>", unsafe_allow_html=True)
@@ -202,11 +213,11 @@ def live_surveillance():
 
     video_files = [
         "Videos/V.mp4",     # Kurla
-        "Videos/NonV2.mp4",  # Andheri
-        "Videos/NonV4.mp4",  # Vashi
+        "Videos/V5.mp4",  # Andheri
+        "Videos/NV7.mp4",  # Vashi
         "Videos/V7.mp4",     # Dadar
-        "Videos/V6.MP4",     # Thane
-        "Videos/V5.MP4"      # Borivali
+        "Videos/V10.MP4",     # Thane
+        "Videos/NonV2.MP4"      # Borivali
     ]
     locations = ["Kurla", "Andheri", "Vashi", "Dadar", "Thane", "Borivali"]
 
@@ -259,7 +270,7 @@ def live_surveillance():
                     else:
                         st.success("✅ **No gender anomaly. Skipping violence detection.**")
 
-                if st.button(f"Send Alert ({location_name})", key=f"alert_{idx}",use_container_width=True):
+                if st.button(f"Send Alert manually", key=f"alert_{idx}",use_container_width=True):
                     location_lower = location_name.lower()
                     if any(loc in location_lower for loc in ["andheri", "vashi", "dadar"]):
                         contact_number = "+919321573202"
